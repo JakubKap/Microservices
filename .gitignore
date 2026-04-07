@@ -95,3 +95,6 @@ http-client.private.env.json
 
 # Maven directory
 .mvn/*
+
+# iml files
+*.iml
