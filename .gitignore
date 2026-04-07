@@ -98,3 +98,6 @@ http-client.private.env.json
 
 # iml files
 *.iml
+
+# any file within target directory
+**/target/**
