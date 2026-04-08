@@ -11,4 +11,6 @@ is located. Moreover, it redirects all request coming APIGW Gateway to customer 
 
 ZipKin is used also within a project to trace requests across multiple services (and debug latency and failures).
 
+In order to avoid latency in response from Notification microservice, message broker is applied.
+
 Moreover, traffic is controlled by LoadBalancer.
