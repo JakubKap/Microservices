@@ -1,5 +1,6 @@
 package com.amigoscode.notification;
 
+import lombok.Getter;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Getter
 @Configuration
 public class NotificationConfig {
 
@@ -39,15 +41,4 @@ public class NotificationConfig {
     }
 
 
-    public String getInternalExchange() {
-        return internalExchange;
-    }
-
-    public String getNotificationQueue() {
-        return notificationQueue;
-    }
-
-    public String getInternalNotificationRoutingKey() {
-        return internalNotificationRoutingKey;
-    }
 }
