@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 public class CustomerService {
     private final CustomerRepository customerRepository;
     private final RestTemplate restTemplate;
+    private final RabbitMQMessageProducer rabbitMQMessageProducer;
 
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
@@ -29,15 +30,29 @@ public class CustomerService {
 //                customer.getId()
 //        );
 
+        //todo: can be direct call to FraudClient
         FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
                 "http://FRAUD/api/v1/fraud-check/{customerId}",
                 FraudCheckResponse.class,
                 customer.getId()
         );
 
-        if(fraudCheckResponse.isFraudster()){
+        if (fraudCheckResponse.isFraudster()) {
             throw new IllegalStateException("fraudster");
         }
         //todo: send notification
+
+        final NotificationRequest notificationRequest = new NotificationRequest(
+                customer.getId(),
+                customer.getEmail(),
+                String.format("Hi %s, welcome to Amigoscode...",
+                        customer.getFirstName())
+        );
+        rabbitMQMessageProducer.publish(
+                notificationRequest,
+                "internal.exchange",
+                "internal.notification.routing-key"
+        );
+
     }
 }
