@@ -1,5 +1,7 @@
 package com.mycompany.customer;
 
+import com.amigoscode.notification.NotificationRequest;
+import com.mycompany.amqp.RabbitMQMessageProducer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -45,7 +47,7 @@ public class CustomerService {
         final NotificationRequest notificationRequest = new NotificationRequest(
                 customer.getId(),
                 customer.getEmail(),
-                String.format("Hi %s, welcome to Amigoscode...",
+                String.format("Hi %s, welcome to MyCompany app...",
                         customer.getFirstName())
         );
         rabbitMQMessageProducer.publish(
