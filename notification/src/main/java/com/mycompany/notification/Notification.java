@@ -1,4 +1,4 @@
-package com.amigoscode.notification;
+package com.mycompany.notification;
 
 import jakarta.persistence.*;
 import lombok.*;

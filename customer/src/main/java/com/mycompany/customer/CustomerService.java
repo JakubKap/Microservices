@@ -1,7 +1,7 @@
 package com.mycompany.customer;
 
-import com.amigoscode.notification.NotificationRequest;
 import com.mycompany.amqp.RabbitMQMessageProducer;
+import com.mycompany.notification.NotificationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
