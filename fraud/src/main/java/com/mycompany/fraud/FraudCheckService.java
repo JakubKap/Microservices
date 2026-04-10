@@ -1,4 +1,4 @@
-package com.amigoscode.fraud;
+package com.mycompany.fraud;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class FraudCheckService {
     private final FraudCheckHistoryRepository fraudCheckHistoryRepository;
 
-    public boolean isFraudulentCustomer(Integer customerId){
+    public boolean isFraudulentCustomer(Integer customerId) {
         fraudCheckHistoryRepository.save(
                 FraudCheckHistory
                         .builder()
