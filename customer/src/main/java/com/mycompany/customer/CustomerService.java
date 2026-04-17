@@ -25,16 +25,8 @@ public class CustomerService {
 
         customerRepository.saveAndFlush(customer);
 
-        //old approach
-//        FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
-//          "http://localhost:8081/api/v1/fraud-check/{customerId}",
-//                FraudCheckResponse.class,
-//                customer.getId()
-//        );
-
-        //todo: can be direct call to FraudClient
         FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
-                "http://FRAUD/api/v1/fraud-check/{customerId}",
+                "http://fraud/api/v1/fraud-check/{customerId}",
                 FraudCheckResponse.class,
                 customer.getId()
         );
@@ -42,7 +34,6 @@ public class CustomerService {
         if (fraudCheckResponse.isFraudster()) {
             throw new IllegalStateException("fraudster");
         }
-        //todo: send notification
 
         final NotificationRequest notificationRequest = new NotificationRequest(
                 customer.getId(),
