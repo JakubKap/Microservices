@@ -1,17 +1,17 @@
 server:
-    port: 8083
-
+  port: 8083
 spring:
-    application:
-        name: api-gateway
-    cloud:
-       gateway:
-          routes:
-            - id: customer
-              uri: lb://CUSTOMER
-              predicates:
-                - Path=/api/v1/customers/**
-
+  application:
+    name: api-gateway
+  zipkin:
+    base-url: http://zipkin:9411
+  cloud:
+    gateway:
+      routes:
+        - id: customer
+          uri: lb://CUSTOMER
+          predicates:
+            - Path=/api/v1/customers/**
 eureka:
     client:
         service-url:

@@ -15,3 +15,5 @@ In order to avoid latency in response from Notification microservice, message br
 (along with Spring AMQP).
 
 Moreover, traffic is controlled by LoadBalancer.
+
+Finally, application is containerized with Google Jib. Images are stored on a cloud - on jakubkap DockerHub account.
