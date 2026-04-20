@@ -95,12 +95,14 @@ minikube service apigw  # Access API gateway
 4. Push: `git push origin <branch>`
 
 ## Commit Convention
-- `feat(scope):` - new feature
-- `fix(scope):` - bug fix
-- `docs(scope):` - documentation changes
-- `refactor(scope):` - code refactoring
-- `test(scope):` - test additions/changes
-- `chore(scope):` - maintenance tasks
+- `feature(microservices):` - new feature
+- `documentation(microservices):` - documentation changes
+- `refactor(microservices):` - code refactoring
+- `fix(microservices):` - bug fix
+- `test(microservices):` - test additions/changes
+- `chore(microservices):` - maintenance tasks
+
+*Note: Every new discovery or change to the project should be documented by enriching this file and committing with the appropriate prefix.*
 
 ## Common Issues
 - **Image pull failures:** Rebuild images with `eval $(minikube docker-env)` for Minikube's Docker context
