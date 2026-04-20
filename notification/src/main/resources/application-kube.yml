@@ -4,7 +4,7 @@ spring:
   application:
     name: notification
   datasource:
-    url: jdbc:postgresql://postgres:5432/notification
+    url: jdbc:postgresql://postgres.infra.svc.cluster.local:5432/notification
     username: amigoscode
     password: password
   jpa:
