@@ -110,3 +110,13 @@ minikube service zipkin  # Access Zipkin UI
 ## Git Workflow
 - Use commit prefixes: `feature(microservices):`, `documentation(microservices):`, `refactor(microservices):`.
 - Push changes after commit: `git push origin <branch>`.
+
+## Today's Work Summary
+- Deployed PostgreSQL, RabbitMQ, and Zipkin as Kubernetes Deployments + Services in `infra` namespace.
+- Applied initContainers to wait for PostgreSQL before starting application pods.
+- Set `SPRING_JPA_HIBERNATE_DDL_AUTO=none` via environment variable to prevent Hibernate schema creation issues.
+- Used FQDN for cross-namespace database access (`postgres.infra.svc.cluster.local`).
+- Added readiness probes with sufficient `initialDelaySeconds`.
+- Configured RabbitMQ with named ports in Service YAML.
+- Deleted and recreated all service deployments to apply updated configurations.
+- Stopped minikube after completing work.
