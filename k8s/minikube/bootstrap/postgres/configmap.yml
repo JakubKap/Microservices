@@ -6,3 +6,7 @@ data:
   POSTGRES_DB: amigoscode
   POSTGRES_USER: amigoscode
   POSTGRES_PASSWORD: password
+  init.sql: |
+    CREATE DATABASE notification;
+    CREATE DATABASE fraud;
+    CREATE DATABASE customer;

@@ -7,6 +7,9 @@ metadata:
 spec:
   serviceName: postgres
   replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
   template:
     metadata:
       name: postgres
@@ -17,13 +20,23 @@ spec:
         - name: postgres
           persistentVolumeClaim:
             claimName: postgres-pc-volume-claim
+        - name: init-script
+          configMap:
+              name: postgres-config
+              items:
+                - key: init.sql
+                  path: init.sql
       containers:
         - name: postgres
           image: postgres:15
           imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
           volumeMounts:
             - mountPath: "/var/lib/postgresql/data"
               name: postgres
+            - mountPath: "/docker-entrypoint-initdb.d"
+              name: init-script
           envFrom:
             - configMapRef:
                 name: postgres-config
@@ -35,6 +48,3 @@ spec:
               cpu: 500m
               memory: 512Mi
       restartPolicy: Always
-  selector:
-    matchLabels:
-      app: postgres
