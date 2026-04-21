@@ -35,10 +35,11 @@ Kubernetes handles service discovery and networking automatically; Eureka and AP
 - Install Minikube: `curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && sudo install minikube-linux-amd64 /usr/local/bin/minikube`
 - Install kubectl: `curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.kdl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && sudo install kubectl /usr/local/bin/`
 
-### Start Minikube
+### Start Minikube and Application
 ```bash
-minikube start --driver=docker
+minikube start
 ```
+The above command is sufficient to start Minikube and all application pods will be running once applied.
 
 ### Build and Push Images
 The deployment manifests reference images like `jakubkap/customer:1.0-SNAPSHOT`. Build and push them:
@@ -65,12 +66,9 @@ kubectl apply -f k8s/minikube/bootstrap/rabbitmq/
 kubectl apply -f k8s/minikube/bootstrap/zipkin/
 
 # Deploy services in recommended order
-kubectl apply -f k8s/minikube/services/postgres/  # if needed separately
-kubectl apply -f k8s/minikube/services/rabbitmq/
 kubectl apply -f k8s/minikube/services/notification/
 kubectl apply -f k8s/minikube/services/fraud/
 kubectl apply -f k8s/minikube/services/customer/
-kubectl apply -f k8s/minikube/services/zipkin/
 ```
 
 ### Verify
@@ -78,6 +76,57 @@ kubectl apply -f k8s/minikube/services/zipkin/
 kubectl get pods
 kubectl get services
 minikube service zipkin  # Access Zipkin UI
+```
+
+## Port Forwarding
+
+After creating pods for the services, you can use port forwarding to access them locally:
+
+### RabbitMQ
+```bash
+kubectl port-forward service/rabbitmq 15672:15672
+```
+Access RabbitMQ management UI at: http://localhost:15672 (default credentials: guest/guest)
+
+### Zipkin
+```bash
+kubectl port-forward service/zipkin 9411:9411
+```
+Access Zipkin UI at: http://localhost:9411
+
+### Customer Service
+```bash
+kubectl port-forward service/customer 8080:8080
+```
+Access Customer Service at: http://localhost:8080
+
+## Stopping Services
+
+### Stop Pods
+To stop all pods in the application namespace:
+```bash
+kubectl delete pods -l app=<your-app-label>
+```
+
+Or to delete all deployments and their pods:
+```bash
+kubectl delete deployment --all
+```
+
+To delete specific service deployments:
+```bash
+kubectl delete deployment customer fraud notification
+```
+
+### Stop Minikube
+To stop the Minikube cluster (keeps the cluster state but stops the VM):
+```bash
+minikube stop
+```
+
+To delete the Minikube cluster (removes the cluster and all data):
+```bash
+minikube delete
 ```
 
 ## Configuration Notes
