@@ -4,7 +4,7 @@ spring:
   application:
     name: fraud
   datasource:
-    url: jdbc:postgresql://postgres.infra.svc.cluster.local:5432/fraud
+    url: jdbc:postgresql://postgres:5432/fraud
     username: amigoscode
     password: password
   jpa:
