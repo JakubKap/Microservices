@@ -89,10 +89,20 @@ Access Customer Service at: http://localhost:8080
 mvn test
 ```
 
-### API Testing
+### API Testing (with example POST request)
 ```bash
 curl http://localhost:8080/api/v1/customers/1
 curl -X POST -H "Content-Type: application/json" -d '{"name":"John Doe","email":"john@example.com"}' http://localhost:8080/api/v1/customers
+```
+
+or
+POST http://localhost:8080/api/v1/customers with following *Body*:
+```json
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@gmail.com"
+}
 ```
 
 ### Testing with RabbitMQ
