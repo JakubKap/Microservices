@@ -2,8 +2,6 @@
 
 ## Application Overview
 This is a Spring Boot microservices application with multiple services:
-- **Eureka Server** (service registry) - not needed in K8s
-- **API Gateway** (apigw) - not needed in K8s, Kubernetes handles routing
 - **Customer Service** (port 8080)
 - **Fraud Service** (port 8081)
 - **Notification Service** (port 8082)
@@ -22,7 +20,7 @@ This is a Spring Boot microservices application with multiple services:
 
 ### Startup Order
 Start services in the following order:
-1. Postgres (along with PgMyAdmin)
+1. Postgres,
 2. RabbitMQ
 3. Notification
 4. Fraud
@@ -42,21 +40,21 @@ minikube start
 The above command is sufficient to start Minikube and all application pods will be running once applied.
 
 ### Build and Push Images
-The deployment manifests reference images like `jakubkap/customer:1.0-SNAPSHOT`. Build and push them:
+The deployment manifests reference images like `jakubkap/customer:1.0-SNAPSHOT`. Build and push them before applying any manifests.
 
-**Using Jib (recommended):**
+**Step 1 — Build all images at once:**
 ```bash
-mvn compile jib:build -Dimage=localhost:5000/yourusername/image:tag
+mvn clean package -P build-docker-image
 ```
 
-**Using Docker and loading into Minikube context:**
+**Step 2 — Push each image to DockerHub:**
 ```bash
-eval $(minikube docker-env)
-mvn clean package
-# Build each service's Docker image
-docker build -t localhost:5000/customer:1.0-SNAPSHOT customer/
-# ... repeat for other services
+docker push jakubkap/customer:1.0-SNAPSHOT
+docker push jakubkap/fraud:1.0-SNAPSHOT
+docker push jakubkap/notification:1.0-SNAPSHOT
 ```
+
+> **Note:** Pods will fail with `ImagePullBackOff` if images have not been pushed before applying manifests.
 
 ### Apply Manifests
 ```bash
@@ -149,6 +147,23 @@ minikube delete
 - Infra: `k8s/minikube/bootstrap/`
 - Services: `k8s/minikube/services/`
 - App configs (Kubernetes profiles): `*/src/main/resources/application-kube.yml`
+
+## Image Build and Push
+
+**Step 1 — Build all images at once:**
+```bash
+mvn clean package -P build-docker-image
+```
+This builds Docker images for all services in a single command.
+
+**Step 2 — Push each image to DockerHub:**
+```bash
+docker push jakubkap/customer:1.0-SNAPSHOT
+docker push jakubkap/fraud:1.0-SNAPSHOT
+docker push jakubkap/notification:1.0-SNAPSHOT
+```
+
+**⚠️ Important:** Images must be built **and pushed** to DockerHub *before* applying Kubernetes manifests. Pods will fail with `ImagePullBackOff` if images are not available in the registry.
 
 ## Common Issues & Fixes
 - **ImagePullBackOff**: rebuild and load images into Minikube's Docker context using `eval $(minikube docker-env)`.
